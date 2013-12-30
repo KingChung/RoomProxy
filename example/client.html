@@ -1,0 +1,55 @@
+<html>
+<head>
+	<title>Test</title>
+	<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+	<script src="../lib/groupproxy.js"></script>
+	<script src="./jquery-min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+
+			var proxy = new GroupProxy('http://localhost:3000');
+			$('#join').on('click', function(){
+				var roomName = $('#roomName').val();
+				proxy.joinRoom(roomName, function(room){
+
+					room.on('message', function(data){
+						console.log(data);
+					});
+
+					$('#send').on('click', function(){
+						room.emit('message', {
+							message: $('#message').val()
+						});
+						return false;
+					});
+				});
+			});
+
+			$('#get_room').on('click', function(){
+				var room = proxy.getRoom($('#roomName').val());
+				room.getInfo(function(data){
+					console.log(data);
+				});
+				return false;
+			});
+		});
+	</script>
+</head>
+<body>
+	<!-- <div id="messageList" style="height:300px;overflow-y:auto;">
+		
+	</div> -->
+	<div>
+		<label>Message</label>
+		<input type="text" name="message" id="message"/>
+		<button id="send">Send</button>
+	</div>
+	<div>
+		<label>JoinRoom</label>
+		<input type="text" name="room" id="roomName"/>
+		<button id="join">join</button>
+
+		<button id="get_room">getRoom</button>
+	</div>
+</body>
+</html>

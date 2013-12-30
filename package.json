@@ -1,15 +1,19 @@
 {
-  "name": "newChat",
-  "version": "0.0.0",
-  "description": "CN New Chat",
+  "name": "groupproxy",
+  "version": "0.1.0",
+  "description": "A simple events boradcast module base on group",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "dependencies": {
+    "socket.io": ">= 0.9.*"
+  },
   "keywords": [
     "realtime",
-    "chat"
+    "room",
+    "boradcast"
   ],
-  "author": "KingChung",
-  "license": "BSD"
+  "author": "King Chung <kingchung@outlook.com>",
+  "license": "MIT"
 }

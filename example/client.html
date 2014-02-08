@@ -1,13 +1,11 @@
 <html>
 <head>
 	<title>Test</title>
-	<script src="http://localhost:3000/socket.io/socket.io.js"></script>
-	<script src="../lib/groupproxy.js"></script>
+	<script src="http://localhost:8080/roomproxy.js"></script>
 	<script src="./jquery-min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
-
-			var proxy = new GroupProxy('http://localhost:3000');
+			var proxy = new RoomProxy();
 			$('#join').on('click', function(){
 				var roomName = $('#roomName').val();
 				proxy.joinRoom(roomName, function(room){
@@ -32,6 +30,24 @@
 				});
 				return false;
 			});
+
+			$('#set_data').on('click', function() {
+				proxy._socket.emit('setTest', {
+					id: 'xxx',
+					profile:{
+						cn_number: 'ki10'
+					}
+				});
+			});
+
+			setTimeout(function(){
+				proxy.login('4f6aa8e091d4080654000000');
+			}, 1000);
+
+			// $('#get_data').on('click', function() {
+			// 	proxy._socket.emit('getTest');
+			// });
+
 		});
 	</script>
 </head>
@@ -50,6 +66,11 @@
 		<button id="join">join</button>
 
 		<button id="get_room">getRoom</button>
+	</div>
+	<div>
+		<label>Test store data</label>
+		<button id="set_data">setData</button>
+		<button id="get_data">getData</button>
 	</div>
 </body>
 </html>

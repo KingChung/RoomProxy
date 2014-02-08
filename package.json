@@ -1,13 +1,19 @@
 {
-  "name": "groupproxy",
+  "name": "roomproxy",
   "version": "0.1.0",
-  "description": "A simple events boradcast module base on group",
-  "main": "index.js",
+  "description": "A simple events boradcast module base on room",
+  "main": "./index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "socket.io": ">= 0.9.*"
+    "socket.io": ">= 0.9.*",
+    "mongojs": ">=0.4.3",
+    "underscore": ">=1.5.2"
+  },
+  "repository":{
+    "type": "git",
+    "url": "git://github.com/Kimgils/roomproxy.git"
   },
   "keywords": [
     "realtime",

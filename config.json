@@ -1,0 +1,11 @@
+{
+	"store": {
+		"lib": "mongojs",
+		"server": {
+			"db": "127.0.0.1/testcn10"
+		},
+		"collections": [
+			"chat_user"
+		]
+	}
+}

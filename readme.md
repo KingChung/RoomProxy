@@ -1,10 +1,10 @@
-#GroupProxy
+#RoomProxy
 
 > 你若触发，我就广播。
 
-GroupProxy是一个群组事件广播模块。它有几个feature：
+RoomProxy是一个群组事件广播模块。它有几个feature：
 
-1. 群组在这里被命名为房间（Room），一个房间可以有多个成员（Client），通过Room API可获取房间信息。
+1. 群组在这里被命名为房间（Room），一个房间可以有多个成员（Client）。
 2. Room实现`订阅/发布`模式，可通过API进行任意事件绑定与发布，触发的事件会广播到Room内每个成员。
 3. 模块只实现Client之间的通知、通讯功能，业务逻辑交还调用者设定。
 
@@ -13,11 +13,8 @@ GroupProxy是一个群组事件广播模块。它有几个feature：
 
 ###引入依赖库###
 	
-	//socket.io
-	<script src="http://localhost:3000/socket.io/socket.io.js"></script>
-
 	//groupproxy库
-	<script src="../lib/groupproxy.js"></script>
+	<script src="http://localhost:8080/groupproxy.js"></script>
 	
 ###创建GroupProxy实例
 	
@@ -62,10 +59,11 @@ GroupProxy是一个群组事件广播模块。它有几个feature：
 	//广播触发`message`事件
 	room.emit('message', {message: 'hello world.'});
 
-#####getInfo(function callback)
+#####getInfo(function callback) 
+
+暂时只返回'client_ids'.
 
 	room.getInfo(function(data){
 		console.log(data); //{client_ids: [xxx,yyy,zzz]}
 	});
 
-暂时只返回'client_ids'.

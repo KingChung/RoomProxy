@@ -6,11 +6,13 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			var proxy = new RoomProxy();
-			$('#join').on('click', function(){
-				var roomName = $('#roomName').val();
-				proxy.joinRoom(roomName, function(room){
 
-					room.on('message', function(data){
+			$('#join').on('click', function(){
+				var roomName = $('#roomName').val()
+					, userIds = $('#user_ids').val();
+
+				proxy.joinRoom(roomName, userIds.split(','), function(room){
+				 	room.on('message', function(data){
 						console.log(data);
 					});
 
@@ -31,21 +33,32 @@
 				return false;
 			});
 
-			$('#set_data').on('click', function() {
-				proxy._socket.emit('setTest', {
-					id: 'xxx',
-					profile:{
-						cn_number: 'ki10'
-					}
-				});
+			$('#login').on('click', function() {
+				var userId = $.trim($('#user_id').val());
+				proxy.login(userId);
+			});
+
+			proxy.addListener('joined', function(data){
+				if(data.roomName)
+				{
+					proxy.joinRoom(data.roomName, function(room){
+					 	room.on('message', function(data){
+							console.log(data);
+						});
+
+						$('#send').on('click', function(){
+							room.emit('message', {
+								message: $('#message').val()
+							});
+							return false;
+						});
+					});
+				}
 			});
 		});
 	</script>
 </head>
 <body>
-	<!-- <div id="messageList" style="height:300px;overflow-y:auto;">
-		
-	</div> -->
 	<div>
 		<label>Message</label>
 		<input type="text" name="message" id="message"/>
@@ -53,15 +66,15 @@
 	</div>
 	<div>
 		<label>JoinRoom</label>
-		<input type="text" name="room" id="roomName"/>
+		<input type="text" name="room" id="roomName" />
+		<input type="text" name="user_ids" id="user_ids" />
 		<button id="join">join</button>
-
 		<button id="get_room">getRoom</button>
 	</div>
 	<div>
-		<label>Test store data</label>
-		<button id="set_data">setData</button>
-		<button id="get_data">getData</button>
+		<label>Login Form</label>
+		<input type="text" name="user_id" id="user_id"/>
+		<button id="login">login</button>
 	</div>
 </body>
 </html>

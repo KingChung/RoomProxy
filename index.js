@@ -31,12 +31,6 @@ app.on('request', function(req, res){
 	}
 });
 
-var Utils = {
-	findClientByUserId: function(userId, callback){
-		return callback(socket);
-	}
-}
-
 /**
  * @TODO
  * 1. Leave and Error
@@ -44,26 +38,33 @@ var Utils = {
  * 3. Use module `cluster`
  */
 io.sockets.on('connection', function(socket){
-
 	var clientId = socket.id;
 	/**
 	 * Login
 	 * @param  Object profile Ex. {id: 'xxx', profile: {name: 'yyy', number: ''}}
 	 */
 	socket.on('login', function(profile){
-		store.updateClientIdWithUserId(clientId, profile.id);
+		store.updateClientIdWithUserId(clientId, profile.id, function(err){
+			socket.on('disconnect', function(){
+				store.removeClientIdWithUserId(clientId, profile.id);
+			});
+		});
 	});
 
 	socket.on('join', function(roomName, userIds){
+		//Self join to the room
 		socket.join(roomName);
 
+		//Pick others join to the room
 		if(userIds instanceof Array && 0 < userIds.length)
 		{
-			//@TODO Get client by userId
-			var clientIds = [];
 			for (var i in userIds) {
-				Utils.findClientByUserId(userIds, function(socket){
-					socket.join(roomName);
+				store.findClientIdsByUserId(userIds[i], function(err, clientIds){
+					if(err)
+						console.log('Can not find doc by userId.');
+
+					for(var i in clientIds)
+						io.sockets.socket(clientIds[i]).emit('joined', {roomName: roomName});
 				});
 			};
 		}

@@ -9,9 +9,12 @@
 
 			$('#join').on('click', function(){
 				var roomName = $('#roomName').val()
-					, userIds = $('#user_ids').val();
+					, userIds = [];
 
-				proxy.joinRoom(roomName, userIds.split(','), function(room){
+				if('' != $('#user_ids').val())
+					userIds = $('#user_ids').val().split(',');
+
+				proxy.joinRoom(roomName, userIds, function(room){
 				 	room.on('message', function(data){
 						console.log(data);
 					});
@@ -38,7 +41,7 @@
 				proxy.login(userId);
 			});
 
-			proxy.addListener('joined', function(data){
+			proxy.on('joined', function(data){
 				if(data.roomName)
 				{
 					proxy.joinRoom(data.roomName, function(room){

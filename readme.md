@@ -14,19 +14,19 @@ RoomProxy是一个群组事件广播模块。它有几个feature：
 ###引入依赖库###
 	
 	//groupproxy库
-	<script src="http://localhost:8080/groupproxy.js"></script>
+	<script src="http://localhost:8080/roomproxy.js"></script>
 	
-###创建GroupProxy实例
+###创建RoomProxy实例
 	
-	var proxy = new GroupProxy('http://localhost:3000');
+	var proxy = new RoomProxy('http://localhost:3000');
 
-`GroupProxy`对象在引入的时候会赋予全局对象；初始化需要传入参数为socket连接地址。
+`RoomProxy`对象在引入的时候会赋予全局对象；初始化需要传入参数为socket连接地址。
 
 ###APIs
 
-####GroupProxy
+####RoomProxy
 
-#####joinRoom(string roomName, [function callback])#####
+#####joinRoom(string roomName, [string userIds], [function callback])#####
 
 	//用法一
 	proxy.joinRoom('test', function(room){
@@ -36,6 +36,8 @@ RoomProxy是一个群组事件广播模块。它有几个feature：
 	//用法二
 	var room = proxy.joinRoom('test2');
 	//do somethings
+	
+	
 
 #####leaveRoom(string roomName)#####
 

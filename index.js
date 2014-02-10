@@ -44,9 +44,11 @@ io.sockets.on('connection', function(socket){
 	 * @param  Object profile Ex. {id: 'xxx', profile: {name: 'yyy', number: ''}}
 	 */
 	socket.on('login', function(profile){
-		store.updateClientIdWithUserId(clientId, profile.id, function(err){
-			socket.on('disconnect', function(){
-				store.removeClientIdWithUserId(clientId, profile.id);
+		socket.set('profile', profile, function(){
+			store.updateClientIdWithUserId(clientId, profile.id, function(err){
+				socket.on('disconnect', function(){
+					store.removeClientIdWithUserId(clientId, profile.id);
+				});
 			});
 		});
 	});
@@ -75,7 +77,12 @@ io.sockets.on('connection', function(socket){
 	});
 
 	socket.on('broadcast', function(data){
-		socket.broadcast.to(data.roomName).emit(data.event, data);
+		socket.get('profile', function(err, profile){
+			socket.broadcast.to(data.roomName).emit(data.event, {
+				caller: profile,
+				data: data.data
+			});
+		});
 	});
 
 	socket.on('getClients', function(roomName, callback){

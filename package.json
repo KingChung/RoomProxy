@@ -2,7 +2,7 @@
   "name": "roomproxy",
   "version": "0.1.0",
   "description": "A simple events boradcast module base on room",
-  "main": "./index.js",
+  "main": "index",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

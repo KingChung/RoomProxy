@@ -1,8 +1,0 @@
-{
-	"store": {
-		"lib": "mongojs",
-		"host": "127.0.0.1",
-		"database": "/testcn10",
-		"collection": "chat_user_room_proxy"
-	}
-}

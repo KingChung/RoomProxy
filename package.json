@@ -1,18 +1,18 @@
 {
   "name": "roomproxy",
-  "version": "0.1.5",
+  "version": "0.2.2",
   "description": "A simple events boradcast module base on room",
   "main": "index",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "socket.io": ">=0.9.*",
+    "socket.io": ">=0.9.16",
     "mongojs": ">=0.4.3",
     "underscore": ">=1.5.2",
     "uglify-js": ">=2.4.13"
   },
-  "repository":{
+  "repository": {
     "type": "git",
     "url": "https://github.com/Kimgils/RoomProxy.git"
   },
@@ -21,6 +21,26 @@
     "room",
     "boradcast"
   ],
-  "author": "King Chung <kingchung@outlook.com>",
-  "license": "MIT"
+  "author": {
+    "name": "King Chung",
+    "email": "kingchung@outlook.com"
+  },
+  "license": "MIT",
+  "contributors": [
+    {
+      "name": "Elson Wu",
+      "url": "http://github.com/elsonwu"
+    }
+  ],
+  "readme": "#RoomProxy\n\n> 你若触发，我就广播。\n\nRoomProxy是一个群组事件广播模块。它有几个feature：\n\n1. 群组在这里被命名为房间（Room），一个房间可以有多个成员（Client）。\n2. Room实现`订阅/发布`模式，可通过API进行任意事件绑定与发布，触发的事件会广播到Room内每个成员。\n3. 模块只实现Client之间的通知、通讯功能，业务逻辑交还调用者设定。\n\n\n##使用方法\n\n###引入依赖库###\n\t\n\t//groupproxy库\n\t<script src=\"http://localhost:8080/roomproxy.js\"></script>\n\t\n###创建RoomProxy实例\n\t\n\tvar proxy = new RoomProxy('http://localhost:3000');\n\n`RoomProxy`对象在引入的时候会赋予全局对象；初始化需要传入参数为socket连接地址。\n\n###APIs\n\n####RoomProxy\n\n#####joinRoom(string roomName, [string userIds], [function callback])#####\n\n\t//用法一\n\tproxy.joinRoom('test', function(room){\n\t\t//do somethings\n\t});\n\t\n\t//用法二\n\tvar room = proxy.joinRoom('test2');\n\t//do somethings\n\t\n\t\n\n#####leaveRoom(string roomName)#####\n\n#####getRoom(string roomName)#####\n\t\n\tvar room = proxy.getRoom('test');\n\t//do somethings\n\n####Room\n\n#####on(string event, function callback) | emit(string event, JSON data)\n\t\n\tvar room = proxy.getRoom('test');\n\t\n\t//绑定`message`事件\n\troom.on('message', function(err, data){\n\t\tif(! err)\n\t\t\tconsole.log(data); //{roomName: 'test', event: 'message', data: {message: 'hello world'}}\n\t});\n\t\n\t//广播触发`message`事件\n\troom.emit('message', {message: 'hello world.'});\n\n#####getInfo(function callback) \n\n暂时只返回'client_ids'.\n\n\troom.getInfo(function(data){\n\t\tconsole.log(data); //{client_ids: [xxx,yyy,zzz]}\n\t});\n\n",
+  "readmeFilename": "readme.md",
+  "bugs": {
+    "url": "https://github.com/Kimgils/RoomProxy/issues"
+  },
+  "_id": "roomproxy@0.1.9",
+  "_from": "roomproxy@0.1.9",
+  "dist": {
+    "shasum": "0852eeb46c69cd0b25342a36864d6cd7a7304a86"
+  },
+  "_resolved": "https://registry.npmjs.org/roomproxy/-/roomproxy-0.1.9.tgz"
 }

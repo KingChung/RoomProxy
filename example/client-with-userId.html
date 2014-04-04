@@ -1,0 +1,83 @@
+<html>
+<head>
+	<title>Simple Test</title>
+	<script src="http://localhost:8080/roomproxy.js"></script>
+	<script src="./jquery-min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var proxy = new RoomProxy();
+
+			$('#join').on('click', function(){
+				var roomName = $('#roomName').val()
+					, userIds = [];
+
+				if('' != $('#user_ids').val())
+					userIds = $('#user_ids').val().split(',');
+
+				proxy.joinRoom(roomName, userIds, function(room){
+				 	room.on('message', function(data){
+						console.log(data);
+					});
+
+					$('#send').on('click', function(){
+						room.emit('message', {
+							message: $('#message').val()
+						});
+						return false;
+					});
+				});
+			});
+
+			$('#get_room').on('click', function(){
+				var room = proxy.getRoom($('#roomName').val());
+				room.getInfo(function(data){
+					console.log(data);
+				});
+				return false;
+			});
+
+			$('#login').on('click', function() {
+				var userId = $.trim($('#user_id').val());
+				proxy.login(userId);
+			});
+
+			proxy.on('joined', function(data){
+				if(data.roomName)
+				{
+					proxy.joinRoom(data.roomName, function(room){
+					 	room.on('message', function(data){
+							console.log(data);
+						});
+
+						$('#send').on('click', function(){
+							room.emit('message', {
+								message: $('#message').val()
+							});
+							return false;
+						});
+					});
+				}
+			});
+		});
+	</script>
+</head>
+<body>
+	<div>
+		<label>Message</label>
+		<input type="text" name="message" id="message"/>
+		<button id="send">Send</button>
+	</div>
+	<div>
+		<label>JoinRoom</label>
+		<input type="text" name="room" id="roomName" />
+		<input type="text" name="user_ids" id="user_ids" />
+		<button id="join">join</button>
+		<button id="get_room">getRoom</button>
+	</div>
+	<div>
+		<label>Login Form</label>
+		<input type="text" name="user_id" id="user_id"/>
+		<button id="login">login</button>
+	</div>
+</body>
+</html>
